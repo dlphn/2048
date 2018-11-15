@@ -1,5 +1,9 @@
 import random
 
+
+""" Init and display grid """
+
+
 def create_grid(n=4):
     """
     Create a new game grid
@@ -169,4 +173,47 @@ def grid_to_string_with_size_and_theme(grid, theme, n=4):
     for j in range(n):
         result += "=" * (longest + 1)
     result += "=\n"
+    return result
+
+
+""" Move tile """
+
+
+def move_row_left(row):
+    n = len(row)
+    result = [0] * n
+    p = 0
+    for i in range(n):
+        if row[i] > 0:
+            if result[p] == 0:
+                result[p] = row[i]
+            elif result[p] == row[i]:
+                result[p] = 2 * row[i]
+                p += 1
+            else:
+                p += 1
+                result[p] = row[i]
+    return result
+
+
+def move_row_right(row):
+    n = len(row)
+    res_left = move_row_left(row)
+    result = [0] * n
+    p = n - 1
+    for i in range(n):
+        if res_left[n-i-1] != 0:
+            result[p] = res_left[n-i-1]
+            p -= 1
+    return result
+
+
+def move_grid(grid, d):
+    result = []
+    for row in grid:
+        if d == "left":
+            result.append(move_row_left(row))
+        elif d == "right":
+            result.append(move_row_right(row))
+    print(result)
     return result
