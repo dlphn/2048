@@ -14,7 +14,7 @@ def create_grid(n=4):
     game_grid = []
     # Grid of size n x n
     for i in range(0, n):
-        line = [' '] * n
+        line = [0] * n
         game_grid.append(line)
     return game_grid
 
@@ -138,7 +138,7 @@ def grid_to_string_with_size(grid, n):
     return result
 
 
-def long_value_with_theme(grid, theme):
+def long_value_with_theme(grid, theme=THEMES["0"]):
     """
     :param grid: (list)
     :param theme: (JSON) theme chosen
@@ -153,7 +153,7 @@ def long_value_with_theme(grid, theme):
     return longest
 
 
-def grid_to_string_with_size_and_theme(grid, theme, n=4):
+def grid_to_string_with_size_and_theme(grid, theme=THEMES["0"], n=4):
     """
     Display the game grid nicely
     :param grid: (list)
@@ -285,3 +285,23 @@ def get_grid_tile_max(grid):
 
 def is_winning_game(grid):
     return get_grid_tile_max(grid) >= 2048
+
+
+""" Dummy game """
+
+
+def random_play():
+    grid = init_game()
+    print(grid_to_string_with_size_and_theme(grid))
+    while not is_game_over(grid):
+        rand_dir = random.choice(COMMANDS_FULL)
+        grid = move_grid(grid, rand_dir)
+        grid_add_new_tile(grid)
+        print(grid_to_string_with_size_and_theme(grid))
+    if is_winning_game(grid):
+        print("Bravo, vous avez gagné !")
+    else:
+        print("Désolé, vous avez perdu... Réessayez !")
+
+
+random_play()
