@@ -53,3 +53,4 @@ THEMES = {
 }
 
 COMMANDS = ['g', 'd', 'h', 'b']
+COMMANDS_FULL = ['left', 'right', 'up', 'down']

@@ -1,4 +1,5 @@
 import random
+from game2048.constants import *
 
 
 """ Init and display grid """
@@ -242,3 +243,45 @@ def move_grid(grid, d):
     if d == "up" or d == "down":
         result = transform_left(result)
     return result
+
+
+""" End of game """
+
+
+def is_grid_full(grid):
+    empty = get_empty_tiles_positions(grid)
+    return len(empty) == 0
+
+
+def move_possible(grid):
+    """
+    Test for each possible direction if the move is allowed
+    :param grid: (list)
+    :return: (list) list of boole
+    """
+    result = []
+    for direction in COMMANDS_FULL:
+        result.append(grid != move_grid(grid, direction))
+    return result
+
+
+def is_game_over(grid):
+    """
+    Test if the game is over : the grid is full or there is no more possible moves
+    :param grid: (list)
+    :return: (bool)
+    """
+    return is_grid_full(grid) or move_possible(grid) == [False] * len(grid)
+
+
+def get_grid_tile_max(grid):
+    tiles = get_all_tiles(grid)
+    maxi = 0
+    for i in range(len(tiles)):
+        if tiles[i] > maxi:
+            maxi = tiles[i]
+    return maxi
+
+
+def is_winning_game(grid):
+    return get_grid_tile_max(grid) >= 2048

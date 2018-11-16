@@ -167,3 +167,38 @@ def test_move_grid():
 test_move_row_left()
 test_move_row_right()
 test_move_grid()
+
+
+""" End of game """
+
+
+def test_grid_full():
+    assert not is_grid_full([[2, 0, 0, 2], [4, 4, 0, 0], [8, 0, 8, 0], [0, 2, 2, 0]])
+    assert is_grid_full([[16, 4, 8, 2], [2, 4, 2, 128], [4, 512, 32, 64], [1024, 2048, 512, 2]])
+
+
+def test_move_possible():
+    assert move_possible([[2, 2, 2, 2], [4, 8, 8, 16], [0, 8, 0, 4], [4, 8, 16, 32]]) == [True, True, True, True]
+    assert move_possible([[2, 4, 8, 16], [16, 8, 4, 2], [2, 4, 8, 16], [16, 8, 4, 2]]) == [False, False, False, False]
+
+
+def test_game_over():
+    assert not is_game_over([[2, 2, 2, 2], [4, 8, 8, 16], [8, 0, 4, 4], [4, 8, 16, 32]])
+    assert is_game_over([[2, 4, 8, 16], [16, 8, 4, 2], [2, 4, 8, 16], [16, 8, 4, 2]])
+
+
+def test_get_grid_tile_max():
+    assert get_grid_tile_max([[2, 4, 8, 16], [16, 8, 4, 2], [2, 4, 8, 16], [16, 8, 4, 2]]) == 16
+    assert get_grid_tile_max([[2, 4, 8, 2048], [16, 0, 4, 2], [2, 4, 8, 16], [16, 8, 4, 2]]) == 2048
+
+
+def test_winning_game():
+    assert not is_winning_game([[2, 4, 8, 16], [16, 8, 4, 2], [2, 4, 8, 16], [16, 8, 4, 2]])
+    assert is_winning_game([[2, 4, 8, 2048], [16, 0, 4, 2], [2, 4, 8, 16], [16, 8, 4, 2]])
+
+
+test_grid_full()
+test_move_possible()
+test_game_over()
+test_get_grid_tile_max()
+test_winning_game()
