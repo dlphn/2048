@@ -208,12 +208,37 @@ def move_row_right(row):
     return result
 
 
+def transform_right(grid):
+    n = len(grid)
+    transformed = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            row.append(grid[n - 1 - j][i])
+        transformed.append(row)
+    return transformed
+
+
+def transform_left(grid):
+    n = len(grid)
+    transformed = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            row.append(grid[j][n - 1 - i])
+        transformed.append(row)
+    return transformed
+
+
 def move_grid(grid, d):
     result = []
+    if d == "up" or d == "down":
+        grid = transform_right(grid)
     for row in grid:
-        if d == "left":
+        if d == "left" or d == "down":
             result.append(move_row_left(row))
-        elif d == "right":
+        elif d == "right" or d == "up":
             result.append(move_row_right(row))
-    print(result)
+    if d == "up" or d == "down":
+        result = transform_left(result)
     return result
