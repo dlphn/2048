@@ -15,17 +15,35 @@ class Game:
     def _create_ui(self):
         self.root = Tk()
         self.root.title('2048 - root')
-        self.root.geometry('200x200+0+0')
+        self.root.geometry('250x300+0+0')
         self.top = Toplevel(self.root)
         self.top.title('2048 - top')
-        self.top.geometry('200x200-200+0')
+        self.top.geometry('200x200-250+0')
         self.top.transient(self.root)
+        self._display_config()
 
         self.background = Frame(self.top, bd=1, relief='solid')
         self.background.grid(row=0, column=0)
         self.graphical_grid = []
         self._display_and_update_graphical_grid()
         self._set_bindings()
+
+    def _display_config(self):
+        f1 = Frame(self.top).grid(row=0, column=0)
+
+        Label(f1, text='Choose grid size').grid(row=0, column=0)
+        size = DoubleVar(f1)
+        spinbox = Spinbox(f1, textvariable=size, from_=4, to=32, increment=1.0)
+        # spinbox.config(command=partial(update_label, spinbox, label, value))
+        spinbox.grid(row=1, column=0)
+
+        Label(f1, text='Choose a theme').grid(row=2, column=0)
+
+        choices = Variable(f1, ())
+        listbox = Listbox(f1, listvariable=choices, selectmode="single")
+        for i in THEMES.keys():
+            listbox.insert('end', THEMES[i]["name"])
+        listbox.grid(row=3, column=0)
 
     def _display_and_update_graphical_grid(self):
         for i in range(self.grid_size):
