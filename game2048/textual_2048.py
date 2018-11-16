@@ -1,4 +1,4 @@
-from game2048.constants import *
+from game2048.grid_2048 import *
 
 
 def read_size_grid():
@@ -31,10 +31,39 @@ def read_player_command():
             print("Commande non valide")
             move = input("Entrez votre commande (g (gauche), d (droite), h (haut), b (bas)): ")
         else:
-            print(move)
             return move
 
 
-read_size_grid()
-read_theme_grid()
-read_player_command()
+def ask_and_read_grid_size():
+    return read_size_grid()
+
+
+def ask_and_read_grid_theme():
+    return THEMES[str(read_theme_grid())]
+
+
+def ask_and_read_player_command():
+    command = read_player_command()
+    index = COMMANDS.index(command)
+    return COMMANDS_FULL[index]
+
+
+def game_play():
+    size = ask_and_read_grid_size()
+    theme = ask_and_read_grid_theme()
+    grid = init_game(size)
+    print(grid_to_string_with_size_and_theme(grid, theme, size))
+    while not is_game_over(grid):
+        move = ask_and_read_player_command()
+        grid = move_grid(grid, move)
+        grid_add_new_tile(grid)
+        print(grid_to_string_with_size_and_theme(grid, theme, size))
+    if is_winning_game(grid):
+        print("Bravo, vous avez gagné !")
+    else:
+        print("Désolé, vous avez perdu... Réessayez !")
+
+
+if __name__ == '__main__':
+    game_play()
+    exit(1)

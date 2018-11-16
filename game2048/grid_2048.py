@@ -304,4 +304,4 @@ def random_play():
         print("Désolé, vous avez perdu... Réessayez !")
 
 
-random_play()
+# random_play()
