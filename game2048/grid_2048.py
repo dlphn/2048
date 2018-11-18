@@ -1,5 +1,5 @@
 import random
-from game2048.constants import *
+import constants
 
 
 """ Init and display grid """
@@ -138,7 +138,7 @@ def grid_to_string_with_size(grid, n):
     return result
 
 
-def long_value_with_theme(grid, theme=THEMES["0"]):
+def long_value_with_theme(grid, theme=constants.THEMES["0"]):
     """
     :param grid: (list)
     :param theme: (JSON) theme chosen
@@ -153,7 +153,7 @@ def long_value_with_theme(grid, theme=THEMES["0"]):
     return longest
 
 
-def grid_to_string_with_size_and_theme(grid, theme=THEMES["0"], n=4):
+def grid_to_string_with_size_and_theme(grid, theme=constants.THEMES["0"], n=4):
     """
     Display the game grid nicely
     :param grid: (list)
@@ -260,7 +260,7 @@ def move_possible(grid):
     :return: (list) list of boole
     """
     result = []
-    for direction in COMMANDS_FULL:
+    for direction in constants.COMMANDS_FULL:
         result.append(grid != move_grid(grid, direction))
     return result
 
@@ -294,7 +294,7 @@ def random_play():
     grid = init_game()
     print(grid_to_string_with_size_and_theme(grid))
     while not is_game_over(grid):
-        rand_dir = random.choice(COMMANDS_FULL)
+        rand_dir = random.choice(constants.COMMANDS_FULL)
         grid = move_grid(grid, rand_dir)
         grid_add_new_tile(grid)
         print(grid_to_string_with_size_and_theme(grid))

@@ -1,6 +1,7 @@
 from tkinter import *
 from functools import partial
-from game2048.grid_2048 import *
+import grid_2048
+import constants
 
 width = 500
 height = 500
@@ -41,8 +42,8 @@ class Game:
 
         choices = Variable(f1, ())
         listbox = Listbox(f1, listvariable=choices, selectmode="single")
-        for i in THEMES.keys():
-            listbox.insert('end', THEMES[i]["name"])
+        for i in constants.THEMES.keys():
+            listbox.insert('end', constants.THEMES[i]["name"])
         listbox.grid(row=3, column=0)
 
         button_quit = Button(f1, text='Quit', command=partial(self._quit_game))
@@ -64,7 +65,7 @@ class Game:
     def _init_game(self, listbox):
         if len(listbox.curselection()) > 0:
             self.theme = str(listbox.curselection()[0])
-        self.grid = init_game(self.grid_size)
+        self.grid = grid_2048.init_game(self.grid_size)
         self._display_grid()
 
     def _quit_game(self):
@@ -74,11 +75,11 @@ class Game:
         for i in range(self.grid_size):
             for j in range(self.grid_size):
                 val = self.grid[i][j]
-                tile = Frame(self.background, bg=TILES_BG_COLOR[val], bd=1, relief='solid', height=height/self.grid_size, width=width/self.grid_size)
+                tile = Frame(self.background, bg=constants.TILES_BG_COLOR[val], bd=1, relief='solid', height=height/self.grid_size, width=width/self.grid_size)
                 tile.grid(row=i, column=j)
                 tile.grid_propagate(False)
-                text = THEMES[self.theme][val]
-                label = Label(tile, text=text, fg=TILES_FG_COLOR[val], bg=TILES_BG_COLOR[val], font=TILES_FONT)
+                text = constants.THEMES[self.theme][val]
+                label = Label(tile, text=text, fg=constants.TILES_FG_COLOR[val], bg=constants.TILES_BG_COLOR[val], font=constants.TILES_FONT)
                 label.grid(row=i, column=j)
 
     def _set_bindings(self):
@@ -99,7 +100,7 @@ class Game:
             self.message.geometry('500x100-250+' + str(height + 100))
             self.message.transient(self.root)
             button = Button(self.message, text='OK', command=partial(self._close_game))
-            if is_winning_game(self.grid):
+            if grid_2048.is_winning_game(self.grid):
                 Label(self.message, text='Bravo, vous avez gagné !').grid(row=0, column=0)
             else:
                 Label(self.message, text='Désolé, vous avez perdu. Réessayez.').grid(row=0, column=0)
@@ -107,9 +108,9 @@ class Game:
 
     def _animate(self):
         if len(self.move) > 0:
-            self.grid = move_grid(self.grid, self.move)
-            self.grid = grid_add_new_tile(self.grid)
-            self.over = is_game_over(self.grid)
+            self.grid = grid_2048.move_grid(self.grid, self.move)
+            self.grid = grid_2048.grid_add_new_tile(self.grid)
+            self.over = grid_2048.is_game_over(self.grid)
             self._display_and_update_graphical_grid()
 
 
