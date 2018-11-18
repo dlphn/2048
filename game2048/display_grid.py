@@ -26,7 +26,6 @@ class Game:
         self.top.title('2048 - top')
         self.top.geometry(str(width) + 'x' + str(height) + '-250+0')
         self.top.transient(self.root)
-        self.message = Toplevel(self.root)
         self._display_config()
 
     def _display_config(self):
@@ -66,6 +65,7 @@ class Game:
         if len(listbox.curselection()) > 0:
             self.theme = str(listbox.curselection()[0])
         self.grid = grid_2048.init_game(self.grid_size)
+        self.over = False
         self._display_grid()
 
     def _quit_game(self):
@@ -87,6 +87,10 @@ class Game:
             self.top.bind("<KeyPress-%s>" % key, self._key_pressed)
         self.move = ""
 
+    def _unset_binding(self):
+        for key in ["Left", "Right", "Up", "Down"]:
+            self.top.unbind("<KeyPress-%s>" % key)
+
     def _close_game(self):
         self.message.destroy()
         self.background.destroy()
@@ -96,6 +100,8 @@ class Game:
         if not self.over:
             self._animate()
         else:
+            self._unset_binding()
+            self.message = Toplevel(self.root)
             self.message.title('2048 - Results')
             self.message.geometry('500x100-250+' + str(height + 100))
             self.message.transient(self.root)
